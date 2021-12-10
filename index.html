@@ -6,117 +6,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>Document</title>
-    <script
+    <!-- <script
       src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.2.0/d3.min.js"
       integrity="sha512-uM8yWltkQ6S5r4ItJehZfUM8PUBPYkA8L1AkbRYjvH5ALHIFjF7J/QEyhda4saz4Jth65TyXXGFDyeZw+MoOKQ=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
-    ></script>
+    ></script> -->
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/chart.js"
     ></script>
   </head>
   <body>
-    <div id="box-chart">
-      <canvas id="scatter-chart" height="975" width="1920"></canvas>
+    <input type="file" id="upload-file" accept=".csv" />
+    <button id="upload-submit">Upload File</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
+
+    <div class="box-chart">
+      <canvas id="myChart"></canvas>
     </div>
 
+    <hr />
+    <button onClick='updateChart("popular")'>Popular Searches</button>
+    <button onClick='updateChart("notSo")'>Random Searches</button>
+
     <script>
-      const csvData = "searchLog.csv";
+      let popular = [];
+      let notSo = [];
+      let popularLabel = [];
+      let notSoLabel = [];
+      const uploadSubmit = document
+        .getElementById("upload-submit")
+        .addEventListener("click", () => {
+          Papa.parse(document.getElementById("upload-file").files[0], {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            complete: function (results) {
+              console.log(results);
+              let output = Object.values(
+                results.data.reduce((obj, { query }) => {
+                  console.log(obj);
+                  if (obj[query] === undefined) {
+                    obj[query] = {
+                      query: query,
+                      occurrences: 1,
+                      hits: obj.hits,
+                    };
+                    // console.log(obj);
+                  } else {
+                    obj[query].occurrences++;
+                    // console.log(obj);
+                  }
+                  return obj;
+                }, {})
+              );
 
-      d3.csv(csvData).then(function (data) {
-        console.log(data);
+              // Separates the results for occurrences that have more than one searched result
+              console.log(output);
+              output.map((item) => {
+                if (item.hits === 0) {
+                  notSo.push(item);
+                  notSoLabel.push(item.query);
+                } else {
+                  popular.push(item);
+                  popularLabel.push(item.query);
+                }
+              });
+            },
+          });
+        });
 
-        data.map(query => {
-          console.log(query)
-        })
-        
+      // const csvData = "searchLog.csv";
 
-        // data.map((hits) => {
-        //   console.log(hits.query + " has " + hits.hits + " hits");
-        // });
-
-        // let countObj = {};
-        // let countArr = [];
-
-        // Used to count how many times a query was searched
-        // function countFunc(keys) {
-        //   countObj[keys] = ++countObj[keys] || 1;
-        //   console.log(countObj);
-        // }
-
-        // const searched = [];
-        // const count = Object.entries(countObj).map((e) => ({ [e[0]]: e[1] }));
-        // console.log(count);
-
-        // for (let i = 0; i < count.length; i++) {
-        //   // console.log(count[i]);
-        //   searched.push(count[i]);
-        // }
-
-        // console.log(searched);
-        // searched.map((r) => {
-        //   console.log(Object.values(r));
-        // });
-
-        // const dataQuery = {
-        //   datasets: [
-        //     {
-        //       label: "Search Query for November/December",
-        //       data: [
-        //         {
-        //           x: searched.map((query) => Object.keys(query)),
-        //           y: fullData.map((hits) => hits.hits),
-        //         },
-        //       ],
-        //       backgroundColor: "rgb(94,32,14)",
-        //     },
-        //   ],
-        // };
-
-        // const ctx = document.getElementById("scatter-chart");
-        // const scatterChart = new Chart(ctx, {
-        //   type: "scatter",
-        //   data: dataQuery.data,
-        //   options: {
-        //     scales: {
-        //       x: {
-        //         type: "linear",
-        //         position: "bottom",
-        //       },
-        //     },
-        //     responsive: true,
-        //   },
-
-        // });
-
-        const ctx = document.getElementById("scatter-chart").getContext("2d");
-        const myChart = new Chart(ctx, {
-          type: "scatter",
-          data: {
-            datasets: [
-              {
-                // data: queryData,
-                // {
-                //   x: searched.map((query) => Object.keys(query)),
-                //   y: fullData.map((hits) => hits.hits),
-                // },
-
-                backgroundColor: "rgb(255, 99, 132)",
-              },
-            ],
+      // d3.csv(csvData).then(function (data) {
+      //   // Splits and reduces the amount of search results and counts the occurrence of the result
+      //   let output = Object.values(
+      //     data.reduce((obj, { query }) => {
+      //       if (obj[query] === undefined) {
+      //         obj[query] = { query: query, occurrences: 1 };
+      //       } else {
+      //         obj[query].occurrences++;
+      //       }
+      //       return obj;
+      //     }, {})
+      //   );
+      // });
+      const data = {
+        labels: [],
+        datasets: [
+          {
+            label: "# of Votes",
+            data: [],
+            backgroundColor: [],
+            borderColor: [],
+            borderWidth: 0.2,
           },
-          options: {
-            scales: {
-              x: {
-                type: "linear",
-                position: "bottom",
-              },
+        ],
+      };
+
+      const config = {
+        type: "bar",
+        data,
+        options: {
+          indexAxis: "y",
+          scales: {
+            y: {
+              beginAtZero: true,
             },
           },
-        });
-      });
+        },
+      };
+
+      // Setup for Chart.
+      const myChart = new Chart(document.getElementById("myChart"), config);
+
+      function updateChart(label) {
+        if (label === "popular") {
+          myChart.data.labels = popularLabel.map((name) => {
+            return name;
+          });
+          myChart.data.datasets[0].data = popular.map((searches) => {
+            return searches.occurrences;
+          });
+        }
+        if (label === "notSo") {
+          myChart.data.labels = notSoLabel.map((name) => {
+            return name;
+          });
+          myChart.data.datasets[0].data = notSo.map((searches) => {
+            return searches.occurrences;
+          });
+        }
+        myChart.update();
+        console.log(label);
+      }
     </script>
   </body>
 </html>
