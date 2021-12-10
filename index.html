@@ -18,36 +18,104 @@
     ></script>
   </head>
   <body>
-    <canvas id="myChart" height="400" width="400"></canvas>
+    <div id="box-chart">
+      <canvas id="scatter-chart" height="975" width="1920"></canvas>
+    </div>
 
     <script>
       const csvData = "searchLog.csv";
 
       d3.csv(csvData).then(function (data) {
-        // console.log(data);
-        let newArr = [];
-        for (let i = 0; i < data.length; i++) {
-          newArr.push(data[i].query);
-        }
-        // console.log(newArr);
-        let countObj = {};
-        let countArr = [];
-        function countFunc(keys) {
-          countObj[keys] = ++countObj[keys] || 1;
-          // console.log(countObj);
-        }
-        newArr.forEach(countFunc);
-        // console.log(countObj);
+        console.log(data);
 
-        const searched = [];
-        const count = Object.entries(countObj).map((e) => ({ [e[0]]: e[1] }));
+        data.map(query => {
+          console.log(query)
+        })
+        
+
+        // data.map((hits) => {
+        //   console.log(hits.query + " has " + hits.hits + " hits");
+        // });
+
+        // let countObj = {};
+        // let countArr = [];
+
+        // Used to count how many times a query was searched
+        // function countFunc(keys) {
+        //   countObj[keys] = ++countObj[keys] || 1;
+        //   console.log(countObj);
+        // }
+
+        // const searched = [];
+        // const count = Object.entries(countObj).map((e) => ({ [e[0]]: e[1] }));
         // console.log(count);
-        // console.log(Object.keys(count[1]));
-        for (let i = 0; i < count.length; i++) {
-          // console.log(count[i]);
-          searched.push(count[i]);
-        }
-        // console.log(searched[]);
+
+        // for (let i = 0; i < count.length; i++) {
+        //   // console.log(count[i]);
+        //   searched.push(count[i]);
+        // }
+
+        // console.log(searched);
+        // searched.map((r) => {
+        //   console.log(Object.values(r));
+        // });
+
+        // const dataQuery = {
+        //   datasets: [
+        //     {
+        //       label: "Search Query for November/December",
+        //       data: [
+        //         {
+        //           x: searched.map((query) => Object.keys(query)),
+        //           y: fullData.map((hits) => hits.hits),
+        //         },
+        //       ],
+        //       backgroundColor: "rgb(94,32,14)",
+        //     },
+        //   ],
+        // };
+
+        // const ctx = document.getElementById("scatter-chart");
+        // const scatterChart = new Chart(ctx, {
+        //   type: "scatter",
+        //   data: dataQuery.data,
+        //   options: {
+        //     scales: {
+        //       x: {
+        //         type: "linear",
+        //         position: "bottom",
+        //       },
+        //     },
+        //     responsive: true,
+        //   },
+
+        // });
+
+        const ctx = document.getElementById("scatter-chart").getContext("2d");
+        const myChart = new Chart(ctx, {
+          type: "scatter",
+          data: {
+            datasets: [
+              {
+                // data: queryData,
+                // {
+                //   x: searched.map((query) => Object.keys(query)),
+                //   y: fullData.map((hits) => hits.hits),
+                // },
+
+                backgroundColor: "rgb(255, 99, 132)",
+              },
+            ],
+          },
+          options: {
+            scales: {
+              x: {
+                type: "linear",
+                position: "bottom",
+              },
+            },
+          },
+        });
       });
     </script>
   </body>
