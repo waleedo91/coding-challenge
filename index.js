@@ -1,80 +1,97 @@
-// const csvData = "searchLog.csv";
+let popular = [];
+let notSo = [];
+let popularLabel = [];
+let notSoLabel = [];
 
-// d3.csv(csvData).then(function (data) {
-//   // console.log(data);
-//   let newArr = [];
-//   for (let i = 0; i < data.length; i++) {
-//     newArr.push(data[i].query);
-//   }
-//   // console.log(newArr);
-//   let countObj = {};
-//   let countArr = [];
-//   function countFunc(keys) {
-//     countObj[keys] = ++countObj[keys] || 1;
-//     // console.log(countObj);
-//   }
-//   newArr.forEach(countFunc);
-//   // console.log(countObj);
+// Input function to upload CSV file
+const uploadSubmit = document
+  .getElementById("upload-submit")
+  .addEventListener("click", () => {
+    Papa.parse(document.getElementById("upload-file").files[0], {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: function (results) {
+        console.log(results.data.map((hit) => hit.hits));
+        let output = Object.values(
+          results.data.reduce((obj, { query }) => {
+            if (obj[query] === undefined) {
+              obj[query] = {
+                query: query,
+                occurrences: 1,
+              };
+            } else {
+              obj[query].occurrences++;
+            }
+            return obj;
+          }, {})
+        );
 
-//   const searched = [];
-//   const popular = [];
-//   const count = Object.entries(countObj).map((e) => ({ [e[0]]: e[1] }));
-//   for (let i = 0; i < count.length; i++) {
-//     searched.push(Object.keys(count[i]));
-//     popular.push(Object.values(count[i]));
+        output.map((item) => {
+          //   console.log(item);
+          if (item.occurrences === 1) {
+            notSo.push(item);
+            notSoLabel.push(item.query);
+          } else {
+            popular.push(item);
+            popularLabel.push(item.query);
+          }
+        });
+      },
+    });
+  });
 
-//     // setup
-//     const barChart = {
-//       labels: searched,
-//       datasets: [
-//         {
-//           label: "Weekly Sales",
-//           data: popular,
-//           backgroundColor: [
-//             "rgba(255, 26, 104, 0.2)",
-//             "rgba(54, 162, 235, 0.2)",
-//             "rgba(255, 206, 86, 0.2)",
-//             "rgba(75, 192, 192, 0.2)",
-//             "rgba(153, 102, 255, 0.2)",
-//             "rgba(255, 159, 64, 0.2)",
-//             "rgba(0, 0, 0, 0.2)",
-//           ],
-//           borderColor: [
-//             "rgba(255, 26, 104, 1)",
-//             "rgba(54, 162, 235, 1)",
-//             "rgba(255, 206, 86, 1)",
-//             "rgba(75, 192, 192, 1)",
-//             "rgba(153, 102, 255, 1)",
-//             "rgba(255, 159, 64, 1)",
-//             "rgba(0, 0, 0, 1)",
-//           ],
-//           borderWidth: 1,
-//         },
-//       ],
-//     };
+const data = {
+  labels: [],
+  datasets: [
+    {
+      label: "# of Votes",
+      borderWidth: 5,
+      backgroundColor: "rgb(128, 255, 0)",
+      borderColor: "black",
+      spacing: 15,
+      hoverBackgroundColor: "white",
+    },
+  ],
+};
 
-//     // config
-//     const config = {
-//       type: "bar",
-//       data,
-//       options: {
-//         scales: {
-//           y: {
-//             beginAtZero: true,
-//           },
-//         },
-//       },
-//     };
+const config = {
+  type: "pie",
+  data,
+  options: {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+    responsive: true,
+  },
+};
 
-//     // render init block
-//     let myChart = new Chart(
-//       document.getElementById("myChart").getContext("2d"),
-//       config
-//     );
-//     myChart.update();
-//     myChart = new Chart(
-//       document.getElementById("myChart").getContext("2d"),
-//       config
-//     );
-//   }
-// });
+// Setup for Chart.
+const myChart = new Chart(document.getElementById("myChart"), config);
+
+function updateChart(label) {
+  if (label === "popular") {
+    myChart.data.labels = popularLabel.map((name) => {
+      return name;
+    });
+    myChart.data.datasets[0].data = popular.map((searches) => {
+      return searches.occurrences;
+    });
+  }
+  if (label === "notSo") {
+    myChart.data.labels = notSoLabel.map((name) => {
+      return name;
+    });
+    myChart.data.datasets[0].data = notSo.map((searches) => {
+      return searches.occurrences;
+    });
+  }
+  myChart.update();
+}
