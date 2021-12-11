@@ -44,27 +44,43 @@
             header: true,
             skipEmptyLines: true,
             complete: function (results) {
-              console.log(results);
+              console.log(results.data);
               let output = Object.values(
                 results.data.reduce((obj, { query }) => {
-                  console.log(obj);
+                  // console.log(obj);
                   if (obj[query] === undefined) {
                     obj[query] = {
                       query: query,
                       occurrences: 1,
-                      hits: obj.hits,
                     };
-                    // console.log(obj);
                   } else {
                     obj[query].occurrences++;
-                    // console.log(obj);
                   }
                   return obj;
                 }, {})
               );
 
-              // Separates the results for occurrences that have more than one searched result
               console.log(output);
+
+              // let hitCount = [];
+              // for (let i = 0; i < results.data.length; i++) {
+              //   hitCount.push(results.data[i].hits);
+              // }
+
+              // console.log(hitCount);
+
+              // const hitCount = results.data.map((hit) => hit.hits);
+              // console.log(hitCount);
+
+              // output.forEach((hit) =>
+              //   Object.assign(hit, {
+              //     hits: hitCount,
+              //   })
+              // );
+              // console.log(output);
+
+              // Separates the results for occurrences that have more than one searched result
+              // console.log(output);
               output.map((item) => {
                 if (item.hits === 0) {
                   notSo.push(item);
@@ -78,40 +94,23 @@
           });
         });
 
-      // const csvData = "searchLog.csv";
-
-      // d3.csv(csvData).then(function (data) {
-      //   // Splits and reduces the amount of search results and counts the occurrence of the result
-      //   let output = Object.values(
-      //     data.reduce((obj, { query }) => {
-      //       if (obj[query] === undefined) {
-      //         obj[query] = { query: query, occurrences: 1 };
-      //       } else {
-      //         obj[query].occurrences++;
-      //       }
-      //       return obj;
-      //     }, {})
-      //   );
-      // });
       const data = {
         labels: [],
         datasets: [
           {
             label: "# of Votes",
-            data: [],
-            backgroundColor: [],
-            borderColor: [],
-            borderWidth: 0.2,
+            borderWidth: 5,
           },
         ],
       };
 
       const config = {
-        type: "bar",
+        type: "radar",
         data,
         options: {
           indexAxis: "y",
           scales: {
+            display: true,
             y: {
               beginAtZero: true,
             },
