@@ -75,12 +75,10 @@ const data = {
     {
       label: "Searched",
       borderWidth: 1,
-      backgroundColor: "black",
-      borderColor: "white",
-      spacing: 15,
+      borderColor: "green",
       hoverBackgroundColor: "red",
-      hoverBorderWidth: 3,
-      cutout: "50%",
+      backgroundColor: "black",
+      radius: "60%",
     },
   ],
 };
@@ -89,23 +87,9 @@ const config = {
   type: "doughnut",
   data,
   options: {
-    scales: {
-      y: {
-        grid: {
-          offset: true,
-        },
-      },
-    },
-    indexAxis: "y",
-    spacing: 1,
     plugins: {
       legend: {
         display: false,
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
       },
     },
     responsive: true,

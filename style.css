@@ -1,10 +1,22 @@
+body {
+  background: url("./images/lettuce-entertain-you.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+}
+
+#myChart {
+  border: 1px solid;
+  height: 400px;
+}
+
 #nav {
   background: gray;
   display: flex;
   height: 50px;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
+  border: 3px solid black;
   width: 100%;
 }
 
@@ -20,10 +32,16 @@
   background: white;
   border-radius: 10px;
   padding: 20px;
+  text-align: center;
 }
 
 .list-item:hover {
   background: lightblue;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: lightblue;
 }
 
 #btns-below {
@@ -36,10 +54,7 @@
 .select-button {
   border-radius: 10px;
   font-size: 20px;
-}
-
-.select-button:hover {
-  background-color: lightblue;
+  text-align: center;
 }
 
 .select-button:focus {

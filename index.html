@@ -20,54 +20,53 @@
   <body>
     <!-- Parser for CSV files -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
-    <div id="nav">
-      <nav>
-        <ul class="nav-list">
-          <li class="list-item">
-            <label
-              for="file-upload"
-              onclick="document.getElementById('upload-file').click()"
-              >Select File</label
-            >
-            <input
-              type="file"
-              name="file-upload"
-              id="upload-file"
-              accept=".csv"
-              style="display: none"
-            />
-          </li>
-
-          <li class="list-item">
-            <label
-              for="submit-button"
-              onclick="document.getElementById('upload-submit').click()"
-              >Submit</label
-            >
-            <button
-              id="upload-submit"
-              name="submit-button"
-              class="btn"
-              style="display: none"
-            >
-              Submit
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-
-    <hr />
-    <div id="btns-below">
-      <button class="select-button" onClick='updateChart("popular")'>
-        Popular Searches
-      </button>
-      <button class="select-button" onClick='updateChart("notSo")'>
-        Random Searches
-      </button>
-    </div>
     <div class="box-chart">
-      <canvas id="myChart" width="1000px"></canvas>
+      <div id="nav">
+        <nav>
+          <ul class="nav-list">
+            <li class="list-item">
+              <label
+                class="btn"
+                for="file-upload"
+                onclick="document.getElementById('upload-file').click()"
+                >Select File</label
+              >
+              <input
+                type="file"
+                name="file-upload"
+                id="upload-file"
+                accept=".csv"
+                style="display: none"
+              />
+            </li>
+
+            <li class="list-item">
+              <label
+                class="btn"
+                for="submit-button"
+                onclick="document.getElementById('upload-submit').click()"
+                >Submit</label
+              >
+              <button
+                id="upload-submit"
+                name="submit-button"
+                style="display: none"
+              ></button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <hr />
+      <div id="btns-below">
+        <button class="select-button btn" onClick='updateChart("popular")'>
+          Popular Searches
+        </button>
+        <button class="select-button btn" onClick='updateChart("notSo")'>
+          Random Searches
+        </button>
+      </div>
+      <canvas id="myChart" height="100px" width="100px"></canvas>
     </div>
 
     <script src="index.js"></script>
