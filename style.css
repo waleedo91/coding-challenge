@@ -5,6 +5,14 @@ body {
   background-attachment: fixed;
 }
 
+.table-container {
+  display: flex;
+  margin: 0 auto;
+  width: 59%;
+  justify-content: center;
+  align-items: center;
+}
+
 #myChart {
   border: 1px solid;
   height: 400px;
@@ -20,44 +28,37 @@ body {
   width: 100%;
 }
 
+#nav {
+  padding-top: 60px;
+}
+
 .nav-list {
   display: flex;
   list-style-type: none;
-  padding: 0 100px;
+  padding-bottom: 40px;
 }
 
 .list-item {
   display: inline-block;
-  margin: 70px;
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
+  margin: 0 80px;
 }
 
-.list-item:hover {
-  background: lightblue;
+.select {
+  width: 90px;
 }
 
 .btn:hover {
   cursor: pointer;
-  background-color: lightblue;
 }
 
-#btns-below {
+#type-button {
   display: flex;
   justify-content: space-around;
   margin-bottom: 10px;
   font-size: 30px;
 }
 
-.select-button {
-  border-radius: 10px;
-  font-size: 20px;
-  text-align: center;
-}
-
-.select-button:focus {
+.select:focus {
   background: gray;
 }
 

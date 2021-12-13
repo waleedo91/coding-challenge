@@ -68,6 +68,31 @@ const uploadSubmit = document
     });
   });
 
+let table = document.getElementById("query-table");
+
+function buildTable(data) {
+  if (table.children.length !== 0) {
+    table.innerHTML = "";
+  }
+  for (let i = 0; i < data.length; i++) {
+    let row = `<tr>
+                      <td>${data[i].query}</td>
+                      <td>${data[i].hits}</td>
+                      <td>${data[i].occurrence}</td>
+                    </tr>`;
+    table.innerHTML += row;
+  }
+}
+
+let tableHead = document.getElementById("table-head");
+let rowHeader = `<thead>
+                  <tr>
+                    <th>Query</th>
+                    <th>Hits</th>
+                    <th>Occurrences</th>
+                  </tr>
+                </thead>`;
+
 // Chart setup beyond this point.
 const data = {
   labels: [],
@@ -107,7 +132,10 @@ function updateChart(label) {
     myChart.data.datasets[0].data = popular.map((searches) => {
       return searches.occurrence;
     });
+    tableHead.innerHTML = rowHeader;
+    buildTable(popular);
   }
+
   if (label === "notSo") {
     myChart.data.labels = notSoLabel.map((name) => {
       return name;
@@ -115,6 +143,8 @@ function updateChart(label) {
     myChart.data.datasets[0].data = notSo.map((searches) => {
       return searches.occurrence;
     });
+    tableHead.innerHTML = rowHeader;
+    buildTable(notSo);
   }
   myChart.update();
 }
