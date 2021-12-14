@@ -68,6 +68,7 @@ const uploadSubmit = document
     });
   });
 
+// Creates data table. 
 let table = document.getElementById("query-table");
 
 function buildTable(data) {

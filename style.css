@@ -3,6 +3,7 @@ body {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-attachment: fixed;
+  font-family: sans-serif, "Times New Roman", Times, serif;
 }
 
 .table-container {
@@ -26,9 +27,6 @@ body {
   justify-content: center;
   border: 3px solid black;
   width: 100%;
-}
-
-#nav {
   padding-top: 60px;
 }
 
@@ -47,6 +45,10 @@ body {
   width: 90px;
 }
 
+.select:focus {
+  background: gray;
+}
+
 .btn:hover {
   cursor: pointer;
 }
@@ -56,10 +58,6 @@ body {
   justify-content: space-around;
   margin-bottom: 10px;
   font-size: 30px;
-}
-
-.select:focus {
-  background: gray;
 }
 
 @media screen and (min-width: 375px) {
@@ -82,9 +80,5 @@ body {
   .select-button {
     font-size: 30px;
     margin: 10px;
-  }
-
-  #btns-below {
-    justify-content: center;
   }
 }
